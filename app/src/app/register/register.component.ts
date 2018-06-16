@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { User } from '../user';
 
@@ -13,7 +14,15 @@ export class RegisterComponent implements OnInit {
     password: ''
   };
 
-  constructor(private userService: UserService) { }
+  register(): void {
+    this.userService.register(this.user)
+      .subscribe(() => this.router.navigate(['/user-list']));
+  };
+
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }

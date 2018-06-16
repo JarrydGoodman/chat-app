@@ -1,0 +1,14 @@
+<div *ngIf="chattingWith" class="conversation">
+  <h6>{{chattingWith.username}}</h6>
+
+  <ul *ngIf="messages" class="messages">
+    <li *ngFor="let message of messages"
+      [class.sent]="message.from.username === user.username">
+      <span>{{message.body}}</span>
+    </li>
+  </ul>
+
+  <div class="send-message">
+    <input [(ngModel)]="message.body" placeholder="Send message...">
+  </div>
+</div>

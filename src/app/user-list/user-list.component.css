@@ -1,0 +1,10 @@
+.user-list li {
+    cursor: pointer;
+    color: #369;
+}
+.user-list li.selected {
+    color: lightgreen;
+}
+.user-list li span {
+    color: inherit;
+}

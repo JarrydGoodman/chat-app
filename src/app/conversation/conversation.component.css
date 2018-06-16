@@ -1,0 +1,26 @@
+.messages {
+    list-style-type: none;
+    padding: 0;
+    width: 350px;
+    overflow: hidden;
+    clear: both;
+    display: block;
+}
+.messages li {
+    padding: 10px;
+    border-radius: 10px;
+    background: #e2e2e2;
+    margin: 5px;
+    color: slategray;
+    float: left;
+    display: block;
+    clear: both;
+}
+.messages li.sent {
+    background: lightgreen;
+    color: #f9f9f9;
+    float: right;
+}
+.messages li span {
+    color: inherit;
+}

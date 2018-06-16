@@ -15,12 +15,6 @@ export class UserListComponent implements OnInit {
 
   users: User[];
 
-  chattingWith: User;
-
-  chatWith(user: User): void {
-    this.chattingWith = user;
-  }
-
   getUsers(): void {
     this.userService.getUsers()
       .subscribe(users => this.users = users);

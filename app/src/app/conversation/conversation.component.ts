@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../user.service';
 import { MessageService } from '../message.service';
 import { User } from '../user';
 import { Message } from '../message';
@@ -16,7 +18,7 @@ export class ConversationComponent implements OnInit {
 
   messages: Message[];
 
-  @Input() chattingWith: User;
+  chattingWith: User;
 
   message: Message = {
     body: '',
@@ -25,14 +27,25 @@ export class ConversationComponent implements OnInit {
     to: this.chattingWith
   };
 
+  getChattingWith(): void {
+    const username = this.route.snapshot.paramMap.get('username');
+    this.userService.getUser(username)
+      .subscribe(user => this.chattingWith = user);
+  };
+
   getMessages(): void {
     this.messageService.getMessages(this.chattingWith)
       .subscribe(messages => this.messages = messages);
   };
 
-  constructor(private messageService: MessageService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
+    this.getChattingWith();
     this.getMessages();
   }
 

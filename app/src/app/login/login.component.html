@@ -8,7 +8,7 @@
     <input [(ngModel)]="user.password" placeholder="password" type="password">
   </label>
   <br><br>
-  <input type="submit" value="Login">
+  <input (click)="login()" type="submit" value="Login">
   <br><br>
   <a routerLink="">Register</a>
 </div>

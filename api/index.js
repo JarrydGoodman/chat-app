@@ -34,25 +34,59 @@ MongoClient.connect(url, function (err, client) {
      * Requests
      */
     app.get('/api/users', (req, res) => {
-        db.collection('users').find().toArray((err, docs) => {
+        const data = req.query;
+        db.collection('users').find(data).toArray((err, docs) => {
             res.send(docs);
+        });
+    });
+    app.get('/api/users/:username', (req, res) => {
+        const data = { username: req.params.username };
+        db.collection('users').findOne(data).then(doc => {
+            res.send(doc);
+        }).catch(err => {
+            res.sendStatus(400);// TODO: different status codes depending on error
         });
     });
     app.post('/api/users/register', (req, res) => {
         const data = req.body;
         // TODO: validation logic
         db.collection('users').insertOne(data).then(result => {
-            res.sendStatus(200);
+            res.send(data);
+        }).catch(err => {
+            res.sendStatus(500);// TODO: different status codes depending on error
+        });
+    });
+    app.post('/api/users/login', (req, res) => {
+        const data = req.body;
+        // TODO: validation logic
+        db.collection('users').findOne(data).then(doc => {
+            if (doc !== null) {
+                res.send(data);
+            } else {
+                res.sendStatus(400);
+            }
+        }).catch(err => {
+            res.sendStatus(500);// TODO: different status codes depending on error
         });
     });
 
-    // TODO:
-    // user login
-    // user get
-    // message create
-    // messages get
-    // messages search
+    app.get('/api/messages', (req, res) => {
+        const data = req.query;
+        db.collection('messages').find(data).toArray((err, docs) => {
+            res.send(docs);
+        });
+    });
+    app.post('/api/messages', (req, res) => {
+        const data = req.body;
+        // TODO: validation logic
+        db.collection('messages').insertOne(data).then(result => {
+            res.send(data);
+        }).catch(err => {
+            res.sendStatus(500);// TODO: different status codes depending on error
+        });
+    });
 
+    // user search
 
     /**
      * Create HTTP Server

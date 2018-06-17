@@ -3,14 +3,17 @@
 
   <ul *ngIf="messages" class="messages">
     <li *ngFor="let message of messages"
-      [class.sent]="message.from.username === user.username">
+      [class.sent]="message.from === user.username">
       <span>{{message.body}}</span>
     </li>
   </ul>
 
   <div class="send-message">
-    <input [(ngModel)]="message.body" placeholder="Send message...">
+    <input [(ngModel)]="message.body" placeholder="Message...">
+    <input (click)="sendMessage()" type="submit" value="Send">
   </div>
 </div>
+
+<br><br>
 
 <a routerLink="/user-list">Users</a>

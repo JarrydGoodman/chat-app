@@ -14,7 +14,8 @@ export class ConversationComponent implements OnInit {
   user: User;
   chattingWith: User;
 
-  messages: Message[];
+  search: '';
+  messages: Message[] = [];
   message: Message = {
     body: '',
     sent: null,
@@ -46,6 +47,11 @@ export class ConversationComponent implements OnInit {
       .subscribe(messages => this.messages = messages);
   };
 
+  searchMessages(): void {
+    this.messageService.searchMessages(this.user, this.chattingWith, this.search)
+      .subscribe(messages => { this.messages = messages; console.log(messages) });
+  };
+
   sendMessage(): void {
     this.message.sent = Date.now();
     this.messageService.sendMessage(this.message)
@@ -56,6 +62,11 @@ export class ConversationComponent implements OnInit {
 
         this.messages.push(message)
       });
+  };
+
+  formatSent(sent): string {
+    let date = new Date(sent);
+    return date.toISOString().substr(0, 10) + ' ' + date.toLocaleTimeString();
   };
 
   constructor(

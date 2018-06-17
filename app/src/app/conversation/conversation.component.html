@@ -1,12 +1,23 @@
 <div *ngIf="chattingWith" class="conversation">
-  <h6>{{chattingWith.username}}</h6>
+  <h6>Talking to: {{chattingWith.username}}</h6>
+
+  <div class="search-messages">
+    <input [(ngModel)]="search" placeholder="Search...">
+    <input (click)="searchMessages()" type="submit" value="&raquo;">
+  </div>
 
   <ul *ngIf="messages" class="messages">
     <li *ngFor="let message of messages"
       [class.sent]="message.from === user.username">
       <span>{{message.body}}</span>
+      <br>
+      <span class="time">{{formatSent(message.sent)}}</span>
     </li>
   </ul>
+
+  <div *ngIf="messages.length == 0">
+    <span class="light">no messages found...</span>
+  </div>
 
   <div class="send-message">
     <input [(ngModel)]="message.body" placeholder="Message...">

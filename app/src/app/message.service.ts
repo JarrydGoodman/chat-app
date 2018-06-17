@@ -27,6 +27,18 @@ export class MessageService {
       );
   };
 
+  searchMessages(to: User, from: User, search: string): Observable<Message[]> {
+    const query = {
+      'body': { '$regex': search, '$options': 'i' }
+    };
+    const params = this.createToFromUsersQuery(to, from, query);
+    const url = this.messagesUrl + '?' + this.serialize(params);
+    return this.http.get<Message[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError<Message[]>('getMessages', null))
+      );
+  };
+
   sendMessage(Message): Observable<Message> {
     return this.http.post<Message>(this.messagesUrl, Message, httpOptions)
       .pipe(
@@ -36,7 +48,7 @@ export class MessageService {
 
   constructor(private http: HttpClient) { }
 
-  private createToFromUsersQuery(user1: User, user2: User): Object {
+  private createToFromUsersQuery(user1: User, user2: User, query?: object): Object {
     return {
       '$and': [
         {
@@ -50,7 +62,8 @@ export class MessageService {
             { from: user1.username },
             { from: user2.username }
           ]
-        }
+        },
+        query ? query : {}// TODO: cleaner query method logic so we don't get an empty object here
       ]
     };
   };

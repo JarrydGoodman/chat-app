@@ -24,3 +24,11 @@
 .messages li span {
     color: inherit;
 }
+.messages li span.time {
+    font-size: 10px;
+    font-style: italic;
+    color: slategrey;
+}
+.messages li.sent span.time {
+    color: #eee;
+}

@@ -51,11 +51,20 @@ MongoClient.connect(url, function (err, client) {
     });
     app.post('/api/users/register', (req, res) => {
         const data = req.body;
+        const user = { username: data.username };
         // TODO: validation logic
-        db.collection('users').insertOne(data).then(result => {
-            res.send(data);
+        db.collection('users').findOne(user).then(doc => {
+            if (doc) {
+                res.sendStatus(400);
+            } else {
+                db.collection('users').insertOne(data).then(result => {
+                    res.send(data);
+                }).catch(err => {
+                    res.sendStatus(500);
+                });
+            }
         }).catch(err => {
-            res.sendStatus(500);// TODO: different status codes depending on error
+            res.sendStatus(500);
         });
     });
     app.post('/api/users/login', (req, res) => {

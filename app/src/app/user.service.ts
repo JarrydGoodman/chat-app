@@ -33,7 +33,7 @@ export class UserService {
     return this.http.post<User>(this.usersUrl + '/register', user, httpOptions)
       .pipe(
         tap(user => this.setActiveUser(user)),
-        catchError(this.handleError<User>('registerUser', null))
+        catchError(this.handleError<User>('registerUser', null))// TODO: alert on username taken
       );
   };
   

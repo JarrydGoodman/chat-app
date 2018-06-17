@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://chat-api-fxpbqrszkr.now.sh'
+  apiUrl: 'https://chat-api-llscidvlab.now.sh'
 };
 
 /*

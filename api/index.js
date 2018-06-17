@@ -1,7 +1,9 @@
+require('dotenv').config();
+
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 
-const url = 'mongodb+srv://@chatcluster-w8rlx.mongodb.net/chat-app?retryWrites=true';
+const url = process.env.MONGODB_URL;
 const dbName = 'chat-app';
 
 MongoClient.connect(url, function (err, client) {

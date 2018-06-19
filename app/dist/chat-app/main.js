@@ -108,7 +108,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>{{ title }}</h1>\n<!-- <app-register></app-register>\n<app-user-list></app-user-list> -->\n<router-outlet></router-outlet>\n"
+module.exports = "<div class=\"page\">\n    <h1 class=\"page-title\">{{ title }}</h1>\n    <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -220,7 +220,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".messages {\n    list-style-type: none;\n    padding: 0;\n    width: 350px;\n    overflow: hidden;\n    clear: both;\n    display: block;\n}\n.messages li {\n    padding: 10px;\n    border-radius: 10px;\n    background: #e2e2e2;\n    margin: 5px;\n    color: slategray;\n    float: left;\n    display: block;\n    clear: both;\n}\n.messages li.sent {\n    background: lightgreen;\n    color: #f9f9f9;\n    float: right;\n}\n.messages li span {\n    color: inherit;\n}\n.messages li span.time {\n    font-size: 10px;\n    font-style: italic;\n    color: slategrey;\n}\n.messages li.sent span.time {\n    color: #eee;\n}"
+module.exports = ".messages {\n    list-style-type: none;\n    padding: 0;\n    margin: 40px 0;\n    width: 210px;\n    overflow: hidden;\n    clear: both;\n    display: block;\n}\n.messages li {\n    padding: 10px;\n    margin: 10px 0;\n    width: 70%;\n    border-radius: 10px;\n    background: #e2e2e2;\n    color: slategray;\n    float: left;\n    display: block;\n    clear: both;\n}\n.messages li.sent {\n    background: #8cdc8c;\n    color: #f9f9f9;\n    float: right;\n}\n.messages li span {\n    color: inherit;\n}\n.messages li span.time {\n    font-size: 10px;\n    font-style: italic;\n    color: slategrey;\n    text-align: right;\n    display: block;\n    margin-top: 7px;\n}\n.messages li.sent span.time {\n    color: #eee;\n}\n.search-button,\n.send-button {\n    margin-left: 10px;\n}"
 
 /***/ }),
 
@@ -231,7 +231,7 @@ module.exports = ".messages {\n    list-style-type: none;\n    padding: 0;\n    
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"chattingWith\" class=\"conversation\">\n  <h6>Talking to: {{chattingWith.username}}</h6>\n\n  <div class=\"search-messages\">\n    <input [(ngModel)]=\"search\" placeholder=\"Search...\">\n    <input (click)=\"searchMessages()\" type=\"submit\" value=\"&raquo;\">\n  </div>\n\n  <ul *ngIf=\"messages\" class=\"messages\">\n    <li *ngFor=\"let message of messages\"\n      [class.sent]=\"message.from === user.username\">\n      <span>{{message.body}}</span>\n      <br>\n      <span class=\"time\">{{formatSent(message.sent)}}</span>\n    </li>\n  </ul>\n\n  <div *ngIf=\"messages.length == 0\">\n    <span class=\"light\">no messages found...</span>\n  </div>\n\n  <div class=\"send-message\">\n    <input [(ngModel)]=\"message.body\" placeholder=\"Message...\">\n    <input (click)=\"sendMessage()\" type=\"submit\" value=\"Send\">\n  </div>\n</div>\n\n<br><br>\n\n<a routerLink=\"/user-list\">Users</a>"
+module.exports = "<div *ngIf=\"chattingWith\" class=\"conversation\">\n  <h4>Talking to: {{chattingWith.username}}</h4>\n\n  <div class=\"search-messages\">\n    <input [(ngModel)]=\"search\" placeholder=\"Search...\" type=\"text\">\n    <input (click)=\"searchMessages()\" class=\"search-button\" type=\"submit\" value=\"&raquo;\">\n  </div>\n\n  <ul *ngIf=\"messages\" class=\"messages\">\n    <li *ngFor=\"let message of messages\"\n      [class.sent]=\"message.from === user.username\">\n      <span>{{message.body}}</span>\n      <br>\n      <span class=\"time\">{{formatSent(message.sent)}}</span>\n    </li>\n  </ul>\n\n  <div *ngIf=\"messages.length == 0\">\n    <span class=\"light\">no messages found...</span>\n  </div>\n\n  <div class=\"send-message\">\n    <input [(ngModel)]=\"message.body\" placeholder=\"Message...\" type=\"text\">\n    <input (click)=\"sendMessage()\" class=\"send-button\" type=\"submit\" value=\"Send\">\n  </div>\n</div>\n\n<br><br>\n\n<a routerLink=\"/user-list\">Users</a>"
 
 /***/ }),
 
@@ -368,7 +368,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <h4>Login</h4>\n  <label>Username:\n    <input [(ngModel)]=\"user.username\" placeholder=\"username\">\n  </label>\n  <br>\n  <label>Password:\n    <input [(ngModel)]=\"user.password\" placeholder=\"password\" type=\"password\">\n  </label>\n  <br><br>\n  <input (click)=\"login()\" type=\"submit\" value=\"Login\">\n  <br><br>\n  <a routerLink=\"\">Register</a>\n</div>\n"
+module.exports = "<div>\n  <h4>Login</h4>\n  <label>\n    <input [(ngModel)]=\"user.username\" placeholder=\"username\" type=\"text\">\n  </label>\n  <br>\n  <label>\n    <input [(ngModel)]=\"user.password\" placeholder=\"password\" type=\"password\">\n  </label>\n  <br><br>\n  <input (click)=\"login()\" type=\"submit\" value=\"Login\">\n  <br><br>\n  <a routerLink=\"\">Register</a>\n</div>\n"
 
 /***/ }),
 
@@ -408,13 +408,17 @@ var LoginComponent = /** @class */ (function () {
     }
     LoginComponent.prototype.login = function () {
         var _this = this;
+        if (!this.user.username || !this.user.password) {
+            alert('Please enter your username & password');
+            return;
+        }
         this.userService.login(this.user)
-            .subscribe(function (res) {
-            if (res !== null) {
-                _this.router.navigate(['/user-list']);
+            .subscribe(function (user) {
+            if (!user) {
+                alert('Invalid credentials');
             }
             else {
-                alert('Invalid credentials'); // TODO: better error handling
+                _this.router.navigate(['/user-list']);
             }
         });
     };
@@ -592,7 +596,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <h4>Register</h4>\n  <label>Username:\n    <input [(ngModel)]=\"user.username\" placeholder=\"username\">\n  </label>\n  <br>\n  <label>Password:\n    <input [(ngModel)]=\"user.password\" placeholder=\"password\" type=\"password\">\n  </label>\n  <br><br>\n  <input (click)=\"register()\" type=\"submit\" value=\"Register\">\n  <br><br>\n  <a routerLink=\"/login\">Login</a>\n</div>\n"
+module.exports = "<div>\n  <h4>Register</h4>\n  <label>\n    <input [(ngModel)]=\"user.username\" placeholder=\"username\" type=\"text\">\n  </label>\n  <br>\n  <label>\n    <input [(ngModel)]=\"user.password\" placeholder=\"password\" type=\"password\">\n  </label>\n  <br><br>\n  <input (click)=\"register()\" type=\"submit\" value=\"Register\">\n  <br><br>\n  <a routerLink=\"/login\">Login</a>\n</div>\n"
 
 /***/ }),
 
@@ -632,8 +636,19 @@ var RegisterComponent = /** @class */ (function () {
     }
     RegisterComponent.prototype.register = function () {
         var _this = this;
+        if (!this.user.username || !this.user.password) {
+            alert('Please choose a username & password');
+            return;
+        }
         this.userService.register(this.user)
-            .subscribe(function () { return _this.router.navigate(['/user-list']); });
+            .subscribe(function (user) {
+            if (!user) {
+                alert('Username taken');
+            }
+            else {
+                _this.router.navigate(['/user-list']);
+            }
+        });
     };
     ;
     RegisterComponent.prototype.ngOnInit = function () {
@@ -757,6 +772,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
 /* harmony import */ var ts_md5_dist_md5__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ts-md5/dist/md5 */ "./node_modules/ts-md5/dist/md5.js");
 /* harmony import */ var ts_md5_dist_md5__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ts_md5_dist_md5__WEBPACK_IMPORTED_MODULE_5__);
+var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -790,20 +813,17 @@ var UserService = /** @class */ (function () {
     ;
     UserService.prototype.register = function (user) {
         var _this = this;
-        // TODO: clone user before hashing password
-        // as two-way data binding is causing the password field to change as well
-        user.password = this.passwordHash(user.password);
-        return this.http.post(this.usersUrl + '/register', user, httpOptions)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (user) { return _this.setActiveUser(user); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError('registerUser', null)) // TODO: alert on username taken
-        );
+        var registerUser = __assign({}, user);
+        registerUser.password = this.passwordHash(registerUser.password);
+        return this.http.post(this.usersUrl + '/register', registerUser, httpOptions)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (user) { return _this.setActiveUser(user); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError('registerUser', null)));
     };
     ;
     UserService.prototype.login = function (user) {
         var _this = this;
-        // TODO: clone user before hashing password
-        // as two-way data binding is causing the password field to change as well
-        user.password = this.passwordHash(user.password);
-        return this.http.post(this.usersUrl + '/login', user, httpOptions)
+        var registerUser = __assign({}, user);
+        registerUser.password = this.passwordHash(registerUser.password);
+        return this.http.post(this.usersUrl + '/login', registerUser, httpOptions)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (user) { return _this.setActiveUser(user); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError('loginUser', null)));
     };
     ;

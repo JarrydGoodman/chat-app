@@ -1,4 +1,8 @@
 /* Application-wide Styles */
+html, body {
+  margin: 0;
+  height: 100%;
+}
 h1 {
   color: #369;
   font-family: Arial, Helvetica, sans-serif;
@@ -9,18 +13,50 @@ h2, h3 {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: lighter;
 }
-body {
-  margin: 2em;
-}
 body, input[text], button {
-  color: slategray;
+  color: slategrey;
   font-family: Cambria, Georgia;
 }
 /* everywhere else */
 * {
   font-family: Arial, Helvetica, sans-serif;
-  color: slategray;
+  color: slategrey;
 }
 a {
   font-size: 12px;
+}
+
+input[type="text"],
+input[type="password"] {
+  border: none;
+  border-bottom: 1px solid #369;
+  padding: 10px 3px;
+  margin: 5px 0;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="submit"] {
+  outline: none;
+}
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: #b7c5d4;
+}
+input[type="submit"],
+button {
+  background: slategrey;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+}
+
+.page {
+  width: 350px;
+  padding: 40px;
+  margin: 0 auto;
+}
+.page-title {
+  padding: 15px 15px 15px 0;
 }

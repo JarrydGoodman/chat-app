@@ -27,21 +27,19 @@ export class UserService {
   };
 
   register(user: User): Observable<User> {
-    // TODO: clone user before hashing password
-    // as two-way data binding is causing the password field to change as well
-    user.password = this.passwordHash(user.password);
-    return this.http.post<User>(this.usersUrl + '/register', user, httpOptions)
+    let registerUser: User = { ...user };
+    registerUser.password = this.passwordHash(registerUser.password);
+    return this.http.post<User>(this.usersUrl + '/register', registerUser, httpOptions)
       .pipe(
         tap(user => this.setActiveUser(user)),
-        catchError(this.handleError<User>('registerUser', null))// TODO: alert on username taken
+        catchError(this.handleError<User>('registerUser', null))
       );
   };
   
   login(user: User): Observable<User> {
-    // TODO: clone user before hashing password
-    // as two-way data binding is causing the password field to change as well
-    user.password = this.passwordHash(user.password);
-    return this.http.post<User>(this.usersUrl + '/login', user, httpOptions)
+    let registerUser: User = { ...user };
+    registerUser.password = this.passwordHash(registerUser.password);
+    return this.http.post<User>(this.usersUrl + '/login', registerUser, httpOptions)
       .pipe(
         tap(user => this.setActiveUser(user)),
         catchError(this.handleError<User>('loginUser', null))

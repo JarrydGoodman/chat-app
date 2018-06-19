@@ -1,9 +1,9 @@
 <div *ngIf="chattingWith" class="conversation">
-  <h6>Talking to: {{chattingWith.username}}</h6>
+  <h4>Talking to: {{chattingWith.username}}</h4>
 
   <div class="search-messages">
-    <input [(ngModel)]="search" placeholder="Search...">
-    <input (click)="searchMessages()" type="submit" value="&raquo;">
+    <input [(ngModel)]="search" placeholder="Search..." type="text">
+    <input (click)="searchMessages()" class="search-button" type="submit" value="&raquo;">
   </div>
 
   <ul *ngIf="messages" class="messages">
@@ -20,8 +20,8 @@
   </div>
 
   <div class="send-message">
-    <input [(ngModel)]="message.body" placeholder="Message...">
-    <input (click)="sendMessage()" type="submit" value="Send">
+    <input [(ngModel)]="message.body" placeholder="Message..." type="text">
+    <input (click)="sendMessage()" class="send-button" type="submit" value="Send">
   </div>
 </div>
 

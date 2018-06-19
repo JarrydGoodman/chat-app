@@ -15,8 +15,19 @@ export class RegisterComponent implements OnInit {
   };
 
   register(): void {
+    if (!this.user.username || !this.user.password) {
+      alert('Please choose a username & password');
+      return;
+    }
+    
     this.userService.register(this.user)
-      .subscribe(() => this.router.navigate(['/user-list']));
+      .subscribe(user => {
+        if (!user) {
+          alert('Username taken')
+        } else {
+          this.router.navigate(['/user-list'])
+        }
+      });
   };
 
   constructor(

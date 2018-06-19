@@ -15,12 +15,17 @@ export class LoginComponent implements OnInit {
   };
 
   login(): void {
+    if (!this.user.username || !this.user.password) {
+      alert('Please enter your username & password');
+      return;
+    }
+    
     this.userService.login(this.user)
-      .subscribe((res) => {
-        if (res !== null) {
-          this.router.navigate(['/user-list']);
+      .subscribe(user => {
+        if (!user) {
+          alert('Invalid credentials');
         } else {
-          alert('Invalid credentials');// TODO: better error handling
+          this.router.navigate(['/user-list']);
         }
       });
   };
